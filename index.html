@@ -86,7 +86,7 @@
                 stitchEfficiency = uptime - (((timePerCut * cuts) + (colorChanges * averageColorTime)) / 3600);
                 result = (((runs * stitchCount) / (rpm * stitchEfficiency) / 60) / uptime) / productionHours;
                 itemPerDay = Math.round(itemCount / result);
-                result *= 1.1;
+                result *= 1.1; //buffer
                 result = Math.round(result * 10) / 10;
 
                 eResult.innerHTML = `Estimated time: ${result} days (~${itemPerDay} per day)`;
