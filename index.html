@@ -1,0 +1,147 @@
+<html>
+<head>
+    <title>Embroidery Calculator</title>
+    <script type="text/javascript">
+        window.onload = function() {
+            eForm = document.getElementById("form");
+            eResult = document.getElementById("result");
+
+            eForm.addEventListener("submit", function(event) {
+                event.preventDefault();
+      
+                eItemCount = document.getElementById("headCount");
+                eHeadCount = document.getElementById("itemCount");
+                eStitchCount = document.getElementById("stitchCount");
+                eRPM = document.getElementById("rpm");
+                eHoursPresent = document.getElementById("hoursPresent");
+                eProductionHours = document.getElementById("productionHours");
+                eTimePerCut = document.getElementById("timePerCut");
+                eCuts = document.getElementById("cuts");
+                eColorChanges = document.getElementById("colorChanges");
+                eAverageColorTime = document.getElementById("averageColorTime");
+
+                itemCount = parseFloat(eHeadCount.value);
+                headCount = parseFloat(eItemCount.value);
+                stitchCount = parseFloat(eStitchCount.value);
+                rpm = parseFloat(eRPM.value);
+                hoursPresent = parseFloat(eHoursPresent.value);
+                productionHours = parseFloat(eProductionHours.value);
+                timePerCut = parseFloat(eTimePerCut.value);
+                cuts = parseFloat(eCuts.value);
+                colorChanges = parseFloat(eColorChanges.value);
+                averageColorTime = parseFloat(eAverageColorTime.value);
+                
+                if (isNaN(itemCount)) {
+                    alert("Please provide item count");
+                    return;
+                }
+
+                if (isNaN(headCount)) {
+                    alert("Please provide head count");
+                    return;
+                }
+
+                if (isNaN(stitchCount)) {
+                    alert("Please provide stitch count");
+                    return;
+                }
+
+                if (isNaN(rpm)) {
+                    alert("Please provide rpm");
+                    return;
+                }
+
+                if (isNaN(hoursPresent)) {
+                    alert("Please provide hours present");
+                    return;
+                }
+
+                if (isNaN(productionHours)) {
+                    alert("Please provide production hours");
+                    return;
+                }
+
+                if (isNaN(timePerCut)) {
+                    alert("Please provide time per trim");
+                    return;
+                }
+
+                if (isNaN(cuts)) {
+                    alert("Please provide amount of cuts");
+                    return;
+                }
+
+                if (isNaN(colorChanges)) {
+                    alert("Please provide amount of color changes");
+                    return;
+                }
+
+                if (isNaN(averageColorTime)) {
+                    alert("Please provide average color change time");
+                    return;
+                }
+
+                uptime = productionHours / hoursPresent;
+                runs = Math.ceil(itemCount / headCount);
+                stitchEfficiency = uptime - (((timePerCut * cuts) + (colorChanges * averageColorTime)) / 3600);
+                result = (((runs * stitchCount) / (rpm * stitchEfficiency) / 60) / uptime) / productionHours;
+                itemPerDay = Math.round(itemCount / result);
+                result *= 1.1;
+                result = Math.round(result * 10) / 10;
+
+                eResult.innerHTML = `Estimated time: ${result} days (~${itemPerDay} per day)`;
+            });
+        }
+    </script>
+    <style type="text/css">
+        label {
+            display: inline-block;
+            width: 200px;
+            margin-bottom: 5px;
+        }
+        input[type="number"] {
+            width: 75px;
+        }
+        #result {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Embroidery Calculator</h1>
+    <form id="form">
+        <label for="itemCount">Item count:</label>
+        <input id="itemCount" type="number" />
+        <br />
+        <label for="headCount">Heads available:</label>
+        <input id="headCount" type="number" />
+        <br />
+        <label for="stitchCount">Total stitches of design:</label>
+        <input id="stitchCount" type="number" />
+        <br />
+        <label for="rpm">RPM of machine:</label>
+        <input id="rpm" type="number" value="750" />
+        <br />
+        <label for="hoursPresent">Hours present:</label> 
+        <input id="hoursPresent" type="number" /> per day
+        <br />
+        <label for="productionHours">Estimated production hours:</label> 
+        <input id="productionHours" type="number" /> per day
+        <br />
+        <label for="timePerCut">Time per trim:</label>
+        <input id="timePerCut" type="number" value="6" /> seconds
+        <br />
+        <label for="cuts">Amount of cuts:</label>
+        <input id="cuts" type="number" />
+        <br />
+        <label for="colorChanges">Amount of color changes:</label>
+        <input id="colorChanges" type="number" />
+        <br />
+        <label for="averageColorTime">Average color change time:</label>
+        <input id="averageColorTime" type="number" value="2" /> seconds
+        <br />
+        <input type="submit" value="Calculate" />
+    </form>
+    <div id="result"></div>
+</body>
+</html>
